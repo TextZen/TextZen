@@ -30,13 +30,11 @@ const api = {
       reader.readAsArrayBuffer(file)
     })
   },
-  searchFullText: (query: string): Promise<Array<SearchResult>> =>
-    ipcRenderer.invoke('searchFullText', query),
-  getShortcut: (key: string): Promise<string> => 
-    ipcRenderer.invoke('getShortcut', key),
-  getAllShortcuts: (): Promise<Record<string, string>> => 
-    ipcRenderer.invoke('getAllShortcuts'),
-  setShortcut: (key: string, value: string): Promise<void> => 
+  searchFullText: (query: string, caseSensitive?: boolean): Promise<Array<SearchResult>> =>
+    ipcRenderer.invoke('searchFullText', query, caseSensitive),
+  getShortcut: (key: string): Promise<string> => ipcRenderer.invoke('getShortcut', key),
+  getAllShortcuts: (): Promise<Record<string, string>> => ipcRenderer.invoke('getAllShortcuts'),
+  setShortcut: (key: string, value: string): Promise<void> =>
     ipcRenderer.invoke('setShortcut', key, value)
 }
 

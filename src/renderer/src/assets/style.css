@@ -265,13 +265,18 @@ input[type='checkbox'] {
 }
 
 .fts-header {
-  @apply p-2 shadow-sm sticky top-[48px] bg-[var(--color-bg-primary)];
+  @apply p-2 shadow-sm sticky top-[48px] bg-[var(--color-bg-primary)] flex gap-2 items-center;
 }
 
 .fts-field {
   @apply rounded-lg px-2 py-1 w-full border border-[var(--color-border-primary)];
 }
 
-.fts-line--active {
-  @apply bg-[var(--color-bg-active)];
+.fts-case-toggle {
+  @apply text-gray-400 px-3 py-1 font-mono;
 }
+
+.fts-case-toggle span.active {
+  @apply text-blue-500;
+}
+

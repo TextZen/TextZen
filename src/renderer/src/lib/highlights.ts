@@ -40,7 +40,7 @@ export const highlights = [
   syntaxHighlighting(
     HighlightStyle.define(specs, {
       scope: markdownLanguage,
-      all: { fontFamily: 'sans-serif !important', color: "#000" }
+      all: { fontFamily: 'sans-serif !important', color: '#000' }
     })
   ),
   syntaxHighlighting(

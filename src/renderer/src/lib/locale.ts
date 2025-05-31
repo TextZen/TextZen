@@ -16,7 +16,8 @@ export const locale = {
     'replace all': 'すべて置換',
     close: '閉じる',
     regexp: '正規表現',
-    notFound: '結果なし'
+    notFound: '結果なし',
+    caseSensitive: '大文字小文字を区別'
   },
   en: {
     openFolder: 'Open Folder',
@@ -35,6 +36,7 @@ export const locale = {
     'replace all': 'Replace All',
     close: 'Close',
     regexp: 'RegExp',
-    notFound: 'No results'
+    notFound: 'No results',
+    caseSensitive: 'Case Sensitive'
   }
 }
