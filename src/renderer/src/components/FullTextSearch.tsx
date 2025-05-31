@@ -27,13 +27,15 @@ export function FullTextSearch({ currentTitle }: { currentTitle: string | null }
   const [currentSelectedResult, setCurrentSelectedResult] = useState(-1)
   const { focus, setFocus } = useContext(FocusContext)
   const inputRef = useRef<HTMLInputElement>(null)
+  const [caseSensitive, setCaseSensitive] = useState(false)
 
-  const handleSearch = useDebouncedCallback(async (e): Promise<void> => {
-    if (e.target.value === '') {
+  const handleSearch = useDebouncedCallback(async (searchQuery?: string): Promise<void> => {
+    const queryToSearch = searchQuery || query
+    if (queryToSearch === '') {
       setResults([])
       return
     }
-    const res = await window.api.searchFullText(e.target.value)
+    const res = await window.api.searchFullText(queryToSearch, caseSensitive)
     setResults(res)
     if (res.length === 0) {
       setIsNotFound(true)
@@ -93,7 +95,7 @@ export function FullTextSearch({ currentTitle }: { currentTitle: string | null }
       const value = `\\[\\[${currentTitle}\\]\\]`
       setQuery(value)
       setFocus('fullTextSearch')
-      const res = await window.api.searchFullText(value)
+      const res = await window.api.searchFullText(value, caseSensitive)
       setResults(res)
       if (res.length === 0) {
         setIsNotFound(true)
@@ -103,7 +105,14 @@ export function FullTextSearch({ currentTitle }: { currentTitle: string | null }
     })
 
     return (): void => window.electron.ipcRenderer.removeAllListeners('back-link')
-  }, [currentTitle, setFocus])
+  }, [currentTitle, setFocus, caseSensitive])
+
+  useEffect(() => {
+    if (query && focus === 'fullTextSearch') {
+      handleSearch(query)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [caseSensitive])
 
   if (focus !== 'fullTextSearch') {
     return <></>
@@ -126,7 +135,7 @@ export function FullTextSearch({ currentTitle }: { currentTitle: string | null }
               ;(e.target as HTMLInputElement).blur()
             }
             if (e.key === 'Enter' && currentSelectedResult === -1) {
-              handleSearch(e)
+              handleSearch(query)
               setHistory([query, ...history])
             }
             if (
@@ -150,6 +159,14 @@ export function FullTextSearch({ currentTitle }: { currentTitle: string | null }
           }}
           autoFocus
         />
+        <button
+          className="fts-case-toggle"
+          onClick={() => setCaseSensitive(!caseSensitive)}
+          title={intl.formatMessage({ id: 'caseSensitive' })}
+          aria-label={intl.formatMessage({ id: 'caseSensitive' })}
+        >
+          <span className={caseSensitive ? 'active' : ''}>Aa</span>
+        </button>
       </div>
       <div className="fts-result">
         {isNotFound ? (

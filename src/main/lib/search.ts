@@ -28,10 +28,12 @@ type FileData = { filepath: string; title: string; lines: Array<Line> }
 
 export const search = async (
   searchTerm: string,
-  directory: string
+  directory: string,
+  caseSensitive?: boolean
 ): Promise<Array<SearchResult>> => {
   try {
-    const command = `${rgPath} "${searchTerm}" --type md --vimgrep ${directory}/*.md`
+    const caseFlag = caseSensitive ? '' : '-i'
+    const command = `${rgPath} "${searchTerm}" ${caseFlag} --type md --vimgrep ${directory}/*.md`
 
     const { stdout } = await execa(command, { shell: true })
 
@@ -61,7 +63,10 @@ export const search = async (
 
       const text = matchText
         .trim()
-        .replaceAll(new RegExp(searchTerm, 'g'), `<span class="highlight">${searchTerm}</span>`)
+        .replaceAll(
+          new RegExp(searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), caseSensitive ? 'g' : 'gi'),
+          (match) => `<span class="highlight">${match}</span>`
+        )
 
       if (!results[filepath].lines.find((line) => line.text === text)) {
         results[filepath].lines.push({

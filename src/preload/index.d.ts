@@ -37,7 +37,7 @@ interface API {
   getJs: () => Promise<Array<string>>
   getCss: () => Promise<Array<string>>
   copyFile: (File) => Promise<string>
-  searchFullText: (string) => Promise<Array<SearchResult>>
+  searchFullText: (query: string, caseSensitive?: boolean) => Promise<Array<SearchResult>>
   getShortcut: (key: string) => Promise<string>
   getAllShortcuts: () => Promise<Record<string, string>>
   setShortcut: (key: string, value: string) => Promise<void>
