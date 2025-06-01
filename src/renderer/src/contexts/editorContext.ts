@@ -1,7 +1,7 @@
 import { ReactCodeMirrorRef } from '@uiw/react-codemirror'
 import { createContext, Dispatch, SetStateAction } from 'react'
 
-interface ContextType {
+interface EditorContextType {
   titleEditor: React.RefObject<HTMLTextAreaElement> | null
   bodyEditor: React.RefObject<ReactCodeMirrorRef> | null
   isVisible: boolean
@@ -10,7 +10,7 @@ interface ContextType {
   setCurrent: Dispatch<SetStateAction<string | null>>
 }
 
-export const EditorContext = createContext<ContextType>({
+export const EditorContext = createContext<EditorContextType>({
   titleEditor: null,
   bodyEditor: null,
   isVisible: true,

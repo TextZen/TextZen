@@ -76,6 +76,7 @@ TextZen supports writing and rendering mathematical equations using KaTeX. You c
 Inline math: `$a^2 + b^2 = c^2$`
 
 Block math:
+
 ```markdown
 $$
 \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
