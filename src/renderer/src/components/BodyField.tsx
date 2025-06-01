@@ -11,7 +11,7 @@ import CodeMirror, { EditorView } from '@uiw/react-codemirror'
 import { KeyboardEventHandler, useCallback, useContext, useEffect, useMemo } from 'react'
 import * as thememirror from 'thememirror'
 import { historyField } from '@codemirror/commands'
-import { File as FileType } from './Page'
+import { File as FileType } from '../types'
 
 const stateFields = { history: historyField }
 

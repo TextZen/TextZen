@@ -1,11 +1,12 @@
 import { useIntl } from 'react-intl'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState, memo, useCallback } from 'react'
 import { FocusContext } from '@renderer/contexts/FocusContext'
 import { MaterialSymbol } from 'react-material-symbols'
 import 'react-material-symbols/rounded'
 import { useLocation } from 'react-router'
+import { CSS_CLASSES } from '../constants/styles'
 
-export default function Header({
+const Header = memo(function Header({
   onCreate,
   title,
   isSidebarVisible
@@ -16,6 +17,18 @@ export default function Header({
 }): JSX.Element {
   const intl = useIntl()
   const { toggleFocus } = useContext(FocusContext)
+
+  const handleCreateClick = useCallback(() => {
+    onCreate?.()
+  }, [onCreate])
+
+  const handleFileSearchClick = useCallback(() => {
+    toggleFocus('fileSearch')
+  }, [toggleFocus])
+
+  const handleFullTextSearchClick = useCallback(() => {
+    toggleFocus('fullTextSearch')
+  }, [toggleFocus])
   const [folder, setFolder] = useState('')
   const location = useLocation()
 
@@ -26,18 +39,20 @@ export default function Header({
   })
 
   return (
-    <header>
+    <header className={CSS_CLASSES.header}>
       {location.pathname !== '/setup' && (
         <>
-          <div className={`header-title ${isSidebarVisible ? '' : 'header-title--r'}`}>
+          <div
+            className={`${CSS_CLASSES.headerTitle} ${isSidebarVisible ? '' : CSS_CLASSES.headerTitleRight}`}
+          >
             <h2 className="folder">{folder}</h2>
             <h3 className="file">{title}</h3>
           </div>
-          <div className="header-btns">
+          <div className={CSS_CLASSES.headerButtons}>
             <button
               type="button"
-              className="i-button"
-              onClick={onCreate}
+              className={CSS_CLASSES.iconButton}
+              onClick={handleCreateClick}
               aria-label={intl.formatMessage({ id: 'add' })}
             >
               <MaterialSymbol weight={300} icon="add" size={22} />
@@ -45,8 +60,8 @@ export default function Header({
 
             <button
               type="button"
-              className="i-button"
-              onClick={() => toggleFocus('fileSearch')}
+              className={CSS_CLASSES.iconButton}
+              onClick={handleFileSearchClick}
               aria-label={intl.formatMessage({ id: 'searchFile' })}
             >
               <MaterialSymbol weight={300} icon="manage_search" size={22} />
@@ -54,8 +69,8 @@ export default function Header({
 
             <button
               type="button"
-              className="i-button"
-              onClick={() => toggleFocus('fullTextSearch')}
+              className={CSS_CLASSES.iconButton}
+              onClick={handleFullTextSearchClick}
               aria-label={intl.formatMessage({ id: 'searchFullText' })}
             >
               <MaterialSymbol weight={300} icon="search" size={22} />
@@ -65,4 +80,6 @@ export default function Header({
       )}
     </header>
   )
-}
+})
+
+export default Header

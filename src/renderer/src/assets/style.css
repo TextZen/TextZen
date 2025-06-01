@@ -279,4 +279,3 @@ input[type='checkbox'] {
 .fts-case-toggle span.active {
   @apply text-blue-500;
 }
-

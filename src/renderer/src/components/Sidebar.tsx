@@ -1,20 +1,21 @@
 import { NavLink } from 'react-router'
-import { File } from './Page'
-import { MouseEvent, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { File } from '../types'
+import { MouseEvent, useCallback, useContext, useEffect, useRef, useState, memo } from 'react'
 import { FixedSizeList } from 'react-window'
 import { EditorContext } from '@renderer/contexts/editorContext'
 import interact from 'interactjs'
 import scrollIntoView from 'scroll-into-view-if-needed'
 import { FocusContext } from '@renderer/contexts/FocusContext'
 import { useHotKey } from '@renderer/hooks/useHotKey'
-import { FileListContext } from '@renderer/contexts/FIleListContext'
+import { FileListContext } from '@renderer/contexts/FileListContext'
+import { CSS_CLASSES } from '../constants/styles'
 
 interface Props {
   files: Array<File>
   isVisible: boolean
 }
 
-const FileItem = ({
+const FileItem = memo(function FileItem({
   title,
   isActive,
   isSelected,
@@ -32,7 +33,7 @@ const FileItem = ({
   nextId: string | null
   previousId: string | null
   onClick: () => void
-}): JSX.Element => {
+}): JSX.Element {
   const handleContextMenu = (
     e: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>,
     id: string
@@ -52,7 +53,7 @@ const FileItem = ({
         data-id={id}
         data-next={nextId}
         data-previous={previousId}
-        className={`fi ${isActive || isSelected ? 'fi--active' : ''}`}
+        className={`${CSS_CLASSES.fileItem} ${isActive || isSelected ? CSS_CLASSES.fileItemActive : ''}`}
         onContextMenu={(e) => handleContextMenu(e, id)}
         onClick={onClick}
       >
@@ -60,9 +61,9 @@ const FileItem = ({
       </NavLink>
     </div>
   )
-}
+})
 
-export default function Sidebar({ files, isVisible }: Props): JSX.Element {
+const Sidebar = memo(function Sidebar({ files, isVisible }: Props): JSX.Element {
   const [listHeight, setListHeight] = useState(0)
   const listRef = useRef<HTMLDivElement>(null)
   const searchField = useRef<HTMLInputElement>(null)
@@ -91,7 +92,7 @@ export default function Sidebar({ files, isVisible }: Props): JSX.Element {
   }, [])
 
   const updateSelection = useCallback(
-    (e): void => {
+    (e: KeyboardEvent): void => {
       if (focus !== 'fileList') {
         return
       }
@@ -190,38 +191,42 @@ export default function Sidebar({ files, isVisible }: Props): JSX.Element {
 
   useEffect(() => {
     listRef.current?.children[0].addEventListener('scroll', (e) => {
-      const header = document.querySelector('.s-h')
+      const header = document.querySelector(`.${CSS_CLASSES.sidebarHeader}`)
       if ((e.target as HTMLElement)?.scrollTop > 0) {
-        header?.classList?.add('shadow-sm')
+        header?.classList?.add(CSS_CLASSES.shadow)
       } else {
-        header?.classList?.remove('shadow-sm')
+        header?.classList?.remove(CSS_CLASSES.shadow)
       }
     })
   }, [listRef])
 
   return (
     <aside style={{ width: `${isVisible ? width : 0}px` }}>
-      <div className="s-h"></div>
-      <div ref={listRef} className="fl">
+      <div className={CSS_CLASSES.sidebarHeader}></div>
+      <div ref={listRef} className={CSS_CLASSES.fileList}>
         <FixedSizeList height={listHeight} width="100%" itemCount={files.length} itemSize={24}>
           {({ style, index }) => {
             const file = files[index]
-            return FileItem({
-              style,
-              title: file?.title,
-              isActive: file.id === current,
-              isSelected: file.id === currentListItem,
-              id: file.id,
-              previousId: files[index - 1]?.id || null,
-              nextId: files[index + 1]?.id || null,
-              onClick: () => {
-                setCurrentListItem(file.id)
-                setFocus('fileList')
-              }
-            })
+            return (
+              <FileItem
+                style={style}
+                title={file?.title}
+                isActive={file.id === current}
+                isSelected={file.id === currentListItem}
+                id={file.id}
+                previousId={files[index - 1]?.id || null}
+                nextId={files[index + 1]?.id || null}
+                onClick={() => {
+                  setCurrentListItem(file.id)
+                  setFocus('fileList')
+                }}
+              />
+            )
           }}
         </FixedSizeList>
       </div>
     </aside>
   )
-}
+})
+
+export default Sidebar

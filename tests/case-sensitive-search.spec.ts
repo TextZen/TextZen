@@ -44,11 +44,11 @@ test.describe('大文字小文字を区別する検索', () => {
     // Perform full text search
     await page.locator('[aria-label="Full Text Search"]').click()
     await page.locator('input').focus()
-    
+
     // Enable case sensitivity first
     await page.locator('.fts-case-toggle').click()
     await page.waitForTimeout(500)
-    
+
     // Then search for exact case "UniqueWord"
     await page.keyboard.insertText('UniqueWord')
     await page.keyboard.press('Enter')
@@ -57,7 +57,7 @@ test.describe('大文字小文字を区別する検索', () => {
     // Should only find exact match "UniqueWord"
     const resultTitle = await page.locator('.fts-title').innerText()
     expect(resultTitle).toContain('Unique Case Test')
-    
+
     const highlights = await page.locator('.highlight').count()
     expect(highlights).toBe(1)
 
@@ -85,7 +85,7 @@ test.describe('大文字小文字を区別する検索', () => {
     // Initially case-insensitive (should find 3 matches)
     const resultTitle = await page.locator('.fts-title').innerText()
     expect(resultTitle).toContain('Toggle Search Test')
-    
+
     let highlights = await page.locator('.highlight').count()
     expect(highlights).toBe(3)
 

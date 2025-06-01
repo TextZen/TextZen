@@ -9,4 +9,5 @@ The content in this file will be modified by an external process during testing.
 - Item 3
 
 ## Section
+
 Lorem ipsum dolor sit amet, consectetur adipiscing elit.

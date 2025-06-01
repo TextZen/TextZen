@@ -7,8 +7,9 @@ This is a file that will be used to test external file changes detection.
 - Item 3
 
 ## Code Example
+
 ```javascript
 function testFunction() {
-  return "Hello World";
+  return 'Hello World'
 }
 ```
