@@ -13,9 +13,10 @@ let specs = [
   { tag: tags.strikethrough, textDecoration: 'line-through' },
   { tag: tags.keyword, color: isDark ? '#c678dd' : '#708' },
   {
-    tag: [tags.atom, tags.bool, tags.url, tags.contentSeparator, tags.labelName],
+    tag: [tags.atom, tags.bool, tags.contentSeparator, tags.labelName],
     color: isDark ? '#61afef' : 'rgba(20, 20, 20)'
   },
+  { tag: tags.url, color: isDark ? '#61afef' : '#0969da' },
   { tag: [tags.literal, tags.inserted], color: isDark ? '#98c379' : '#164' },
   { tag: [tags.string, tags.deleted], color: isDark ? '#e06c75' : '#a11' },
   {
@@ -29,7 +30,8 @@ let specs = [
   { tag: [tags.special(tags.variableName), tags.macroName], color: isDark ? '#56b6c2' : '#256' },
   { tag: tags.definition(tags.propertyName), color: isDark ? '#61afef' : '#00c' },
   { tag: tags.comment, color: isDark ? '#7f848e' : '#940' },
-  { tag: tags.invalid, color: isDark ? '#f00' : '#f00' }
+  { tag: tags.invalid, color: isDark ? '#f00' : '#f00' },
+  { tag: tags.quote, fontStyle: 'italic', opacity: '0.6' }
 ]
 
 if (window.textZen?.codemirror.styles.length > 0) {
