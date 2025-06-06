@@ -56,6 +56,10 @@ html {
   @apply !h-auto !max-h-none bg-[var(--color-bg-primary)];
 }
 
+.cm-line {
+  @apply leading-6 text-[14px];
+}
+
 .cm-scroller {
   font-family: Arial, Helvetica, sans-serif;
   @apply p-2 pt-0 min-h-[calc(100vh-100px)] pb-[calc(100vh-100px)];
