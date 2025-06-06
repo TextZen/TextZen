@@ -1,6 +1,6 @@
 {
   "name": "text-zen",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "A Markdown editor application",
   "main": "./out/main/index.js",
   "author": "hi@moeki.org",
